@@ -1,8 +1,5 @@
 package com.andrevsc.keybook.security;
 
-import java.util.Arrays;
-
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
@@ -21,41 +18,40 @@ import org.springframework.web.cors.CorsConfiguration;
 @EnableWebSecurity
 public class SecurityConfig {
 
-    @Autowired
-    private SecurityFilter securityFilter;
+    private final SecurityFilter securityFilter;
 
-    // @Bean
-    @Bean
-public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-    return http
-        .csrf(csrf -> csrf.disable())
-        .cors(cors -> cors.configurationSource(request -> {
-            CorsConfiguration config = new CorsConfiguration();
-            config.setAllowedOrigins(Arrays.asList("*")); // Para desenvolvimento
-            config.setAllowedMethods(Arrays.asList("GET","POST","PUT","DELETE"));
-            config.setAllowedHeaders(Arrays.asList("*"));
-            return config;
-        }))
-        .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-        .authorizeHttpRequests(authorize -> authorize
-            .requestMatchers(HttpMethod.POST, "/auth/login").permitAll()
-            .requestMatchers(HttpMethod.POST, "/auth/register").permitAll()
-            .requestMatchers("/v3/api-docs/**", "/swagger-ui.html", "/swagger-ui/**").permitAll()
-            .requestMatchers("/", "/public/**").permitAll()
-            .anyRequest().authenticated()
-        )
-        .addFilterBefore(securityFilter, UsernamePasswordAuthenticationFilter.class)
-        .build();
-}
+    public SecurityConfig(SecurityFilter securityFilter) {
+        this.securityFilter = securityFilter;
+    }
 
     @Bean
-    public AuthenticationManager authenticationManager(AuthenticationConfiguration authenticationConfiguration) throws Exception {
-        return authenticationConfiguration.getAuthenticationManager();
+    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+        return http
+                .csrf(csrf -> csrf.disable())
+                .cors(cors -> cors.configurationSource(request -> {
+                    CorsConfiguration config = new CorsConfiguration();
+                    config.addAllowedOrigin("*");
+                    config.addAllowedMethod("*");
+                    config.addAllowedHeader("*");
+                    return config;
+                }))
+                .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+                .authorizeHttpRequests(authorize -> authorize
+                        .requestMatchers(HttpMethod.POST, "/auth/**").permitAll()
+                        .requestMatchers("/v3/api-docs/**", "/swagger-ui/**").permitAll()
+                        .anyRequest().authenticated()
+                )
+                .addFilterBefore(securityFilter, UsernamePasswordAuthenticationFilter.class)
+                .build();
+    }
+
+    @Bean
+    public AuthenticationManager authenticationManager(AuthenticationConfiguration configuration) throws Exception {
+        return configuration.getAuthenticationManager();
     }
 
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
-
 }

@@ -24,27 +24,25 @@ public class ItemService {
     @Autowired
     private ItemRepository itemRepository;
 
+    @Autowired
+    private TabelaRepository tabelaRepository;
+
     @Transactional
     public ItemDetailResponseDTO updateItemWithDetails(Long itemId, ItemUpdateRequestDTO dto) {
         Item itemExistente = itemRepository.findById(itemId)
                 .orElseThrow(() -> new EntityNotFoundException("Item não encontrado com o id: " + itemId));
 
-        itemExistente.setNome(dto.nome());
-
+        updateItemFields(itemExistente, dto);
 
         Item itemAtualizado = itemRepository.save(itemExistente);
-
         return new ItemDetailResponseDTO(itemAtualizado);
     }
 
     public ItemDetailResponseDTO getItemWithDetails(Long itemId) {
-        Item item = itemRepository.findByIdWithDetails(itemId)
-                .orElseThrow(() -> new EntityNotFoundException("Item não encontrado com o id: " + itemId));
-        return new ItemDetailResponseDTO(item);
-    }
-
-    @Autowired
-    private TabelaRepository tabelaRepository;
+    Item item = itemRepository.findById(itemId)
+            .orElseThrow(() -> new EntityNotFoundException("Item não encontrado com o id: " + itemId));
+    return new ItemDetailResponseDTO(item);
+}
 
     @Transactional
     public ItemResponseDTO createItem(ItemCreateDTO itemCreateDTO, Long tabelaId) {
@@ -54,6 +52,7 @@ public class ItemService {
         Item novoItem = new Item();
         novoItem.setNome(itemCreateDTO.nome());
         novoItem.setTabela(tabela);
+        setAdditionalFields(novoItem, itemCreateDTO);
 
         tabela.setNumeroItems(tabela.getNumeroItems() + 1);
 
@@ -78,11 +77,11 @@ public class ItemService {
     }
 
     @Transactional
-    public ItemResponseDTO updateItem(Long itemId, ItemCreateDTO itemCreateDTO) {
+    public ItemResponseDTO updateItem(Long itemId, ItemUpdateRequestDTO dto) {
         Item itemExistente = itemRepository.findById(itemId)
                 .orElseThrow(() -> new EntityNotFoundException("Item não encontrado com o id: " + itemId));
 
-        itemExistente.setNome(itemCreateDTO.nome());
+        updateItemFields(itemExistente, dto);
 
         Item updatedItem = itemRepository.save(itemExistente);
         return new ItemResponseDTO(updatedItem);
@@ -99,5 +98,38 @@ public class ItemService {
 
         tabela.setNumeroItems(tabela.getNumeroItems() - 1);
         tabelaRepository.save(tabela);
+    }
+
+    private void updateItemFields(Item item, ItemUpdateRequestDTO dto) {
+        item.setNome(dto.nome());
+        item.setTransponder(dto.transponder());
+        item.setTipoServico(dto.tipoServico());
+        item.setAnoVeiculo(dto.anoVeiculo());
+        item.setValorCobrado(dto.valorCobrado());
+        item.setMarcaVeiculo(dto.marcaVeiculo());
+        item.setModeloVeiculo(dto.modeloVeiculo());
+        item.setTipoChave(dto.tipoChave());
+        item.setMaquina(dto.maquina());
+        item.setFornecedor(dto.fornecedor());
+        item.setDataConstrucao(dto.dataConstrucao());
+        item.setCorteMecanico(dto.corteMecanico());
+        item.setSistemaImobilizador(dto.sistemaImobilizador());
+        item.setObservacoes(dto.observacoes());
+    }
+
+    private void setAdditionalFields(Item item, ItemCreateDTO dto) {
+        item.setTransponder(dto.transponder());
+        item.setTipoServico(dto.tipoServico());
+        item.setAnoVeiculo(dto.anoVeiculo());
+        item.setValorCobrado(dto.valorCobrado());
+        item.setMarcaVeiculo(dto.marcaVeiculo());
+        item.setModeloVeiculo(dto.modeloVeiculo());
+        item.setTipoChave(dto.tipoChave());
+        item.setMaquina(dto.maquina());
+        item.setFornecedor(dto.fornecedor());
+        item.setDataConstrucao(dto.dataConstrucao());
+        item.setCorteMecanico(dto.corteMecanico());
+        item.setSistemaImobilizador(dto.sistemaImobilizador());
+        item.setObservacoes(dto.observacoes());
     }
 }
