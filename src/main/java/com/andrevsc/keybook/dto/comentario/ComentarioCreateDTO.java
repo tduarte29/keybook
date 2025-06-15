@@ -1,5 +1,5 @@
-package com.andrevsc.keybook.dto.comentario;
+// package com.andrevsc.keybook.dto.comentario;
 
-public record ComentarioCreateDTO(
-    String texto
-) {}
+// public record ComentarioCreateDTO(
+//     String texto
+// ) {}

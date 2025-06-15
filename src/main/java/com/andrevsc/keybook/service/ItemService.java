@@ -1,22 +1,22 @@
 package com.andrevsc.keybook.service;
 
-import com.andrevsc.keybook.dto.item.ItemCreateDTO;
-import com.andrevsc.keybook.dto.item.ItemDetailResponseDTO;
-import com.andrevsc.keybook.dto.item.ItemResponseDTO;
-import com.andrevsc.keybook.dto.item.ItemUpdateRequestDTO;
-import com.andrevsc.keybook.model.Comentario;
-import com.andrevsc.keybook.model.Item;
-import com.andrevsc.keybook.model.Propriedade;
-import com.andrevsc.keybook.model.Tabela;
-import com.andrevsc.keybook.repository.ItemRepository;
-import com.andrevsc.keybook.repository.TabelaRepository;
-import jakarta.persistence.EntityNotFoundException;
+import java.util.List;
+import java.util.stream.Collectors;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
-import java.util.stream.Collectors;
+import com.andrevsc.keybook.dto.item.ItemCreateDTO;
+import com.andrevsc.keybook.dto.item.ItemDetailResponseDTO;
+import com.andrevsc.keybook.dto.item.ItemResponseDTO;
+import com.andrevsc.keybook.dto.item.ItemUpdateRequestDTO;
+import com.andrevsc.keybook.model.Item;
+import com.andrevsc.keybook.model.Tabela;
+import com.andrevsc.keybook.repository.ItemRepository;
+import com.andrevsc.keybook.repository.TabelaRepository;
+
+import jakarta.persistence.EntityNotFoundException;
 
 @Service
 public class ItemService {
@@ -31,22 +31,22 @@ public class ItemService {
 
         itemExistente.setNome(dto.nome());
 
-        itemExistente.getPropriedades().clear();
-        dto.propriedades().forEach(propDTO -> {
-            Propriedade novaPropriedade = new Propriedade();
-            novaPropriedade.setNome(propDTO.nome());
-            novaPropriedade.setValor(propDTO.valor());
-            novaPropriedade.setItem(itemExistente);
-            itemExistente.getPropriedades().add(novaPropriedade);
-        });
+        // itemExistente.getPropriedades().clear();
+        // dto.propriedades().forEach(propDTO -> {
+        //     Propriedade novaPropriedade = new Propriedade();
+        //     novaPropriedade.setNome(propDTO.nome());
+        //     novaPropriedade.setValor(propDTO.valor());
+        //     novaPropriedade.setItem(itemExistente);
+        //     itemExistente.getPropriedades().add(novaPropriedade);
+        // });
 
-        itemExistente.getComentarios().clear();
-        dto.comentarios().forEach(comentarioDTO -> {
-            Comentario novoComentario = new Comentario();
-            novoComentario.setTexto(comentarioDTO.texto());
-            novoComentario.setItem(itemExistente);
-            itemExistente.getComentarios().add(novoComentario);
-        });
+        // itemExistente.getComentarios().clear();
+        // dto.comentarios().forEach(comentarioDTO -> {
+        //     Comentario novoComentario = new Comentario();
+        //     novoComentario.setTexto(comentarioDTO.texto());
+        //     novoComentario.setItem(itemExistente);
+        //     itemExistente.getComentarios().add(novoComentario);
+        // });
 
         Item itemAtualizado = itemRepository.save(itemExistente);
 

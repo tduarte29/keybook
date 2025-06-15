@@ -1,6 +1,6 @@
-package com.andrevsc.keybook.dto.propriedade;
+// package com.andrevsc.keybook.dto.propriedade;
 
-public record PropriedadeCreateDTO(
-    String nome,
-    String valor
-) {}
+// public record PropriedadeCreateDTO(
+//     String nome,
+//     String valor
+// ) {}

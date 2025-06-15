@@ -1,10 +1,19 @@
 package com.andrevsc.keybook.model;
 
-import jakarta.persistence.*;
-import org.hibernate.annotations.CreationTimestamp;
 import java.time.LocalDateTime;
-import java.util.List;
 import java.util.Objects;
+
+import org.hibernate.annotations.CreationTimestamp;
+
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.Table;
 
 @Entity
 @Table(name = "ITEM")
@@ -26,22 +35,20 @@ public class Item {
     @JoinColumn(name = "ID_Tabela_FK", nullable = false)
     private Tabela tabela;
 
-    @OneToMany(mappedBy = "item", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Propriedade> propriedades;
+    // @OneToMany(mappedBy = "item", cascade = CascadeType.ALL, orphanRemoval = true)
+    // private List<Propriedade> propriedades;
 
-    @OneToMany(mappedBy = "item", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Comentario> comentarios;
+    // @OneToMany(mappedBy = "item", cascade = CascadeType.ALL, orphanRemoval = true)
+    // private List<Comentario> comentarios;
 
     public Item() {
     }
 
-    public Item(Long id, String nome, LocalDateTime dataCriacao, Tabela tabela, List<Propriedade> propriedades, List<Comentario> comentarios) {
+    public Item(Long id, String nome, LocalDateTime dataCriacao, Tabela tabela) {
         this.id = id;
         this.nome = nome;
         this.dataCriacao = dataCriacao;
         this.tabela = tabela;
-        this.propriedades = propriedades;
-        this.comentarios = comentarios;
     }
 
     public Long getId() {
@@ -74,22 +81,6 @@ public class Item {
 
     public void setTabela(Tabela tabela) {
         this.tabela = tabela;
-    }
-
-    public List<Propriedade> getPropriedades() {
-        return propriedades;
-    }
-
-    public void setPropriedades(List<Propriedade> propriedades) {
-        this.propriedades = propriedades;
-    }
-
-    public List<Comentario> getComentarios() {
-        return comentarios;
-    }
-
-    public void setComentarios(List<Comentario> comentarios) {
-        this.comentarios = comentarios;
     }
 
     @Override
