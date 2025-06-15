@@ -1,5 +1,6 @@
 package com.andrevsc.keybook.model;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Objects;
 
@@ -35,22 +36,51 @@ public class Item {
     @JoinColumn(name = "ID_Tabela_FK", nullable = false)
     private Tabela tabela;
 
-    // @OneToMany(mappedBy = "item", cascade = CascadeType.ALL, orphanRemoval = true)
-    // private List<Propriedade> propriedades;
+    @Column(name = "Transponder")
+    private String transponder;
 
-    // @OneToMany(mappedBy = "item", cascade = CascadeType.ALL, orphanRemoval = true)
-    // private List<Comentario> comentarios;
+    @Column(name = "Tipo_Servico")
+    private String tipoServico;
+
+    @Column(name = "Ano_Veiculo")
+    private String anoVeiculo;
+
+    @Column(name = "Valor_Cobrado")
+    private Double valorCobrado;
+
+    @Column(name = "Marca_Veiculo")
+    private String marcaVeiculo;
+
+    @Column(name = "Modelo_Veiculo")
+    private String modeloVeiculo;
+
+    @Column(name = "Tipo_Chave")
+    private String tipoChave;
+
+    @Column(name = "Maquina")
+    private String maquina;
+
+    @Column(name = "Fornecedor")
+    private String fornecedor;
+
+    @Column(name = "Data_Construcao")
+    private LocalDate dataConstrucao;
+
+    @Column(name = "Corte_Mecanico")
+    private String corteMecanico;
+
+    @Column(name = "Sistema_Imobilizador")
+    private String sistemaImobilizador;
+
+    @Column(name = "Observacoes", columnDefinition = "TEXT")
+    private String observacoes;
+
+    // Construtores, getters, setters, equals, hashCode e toString
 
     public Item() {
     }
 
-    public Item(Long id, String nome, LocalDateTime dataCriacao, Tabela tabela) {
-        this.id = id;
-        this.nome = nome;
-        this.dataCriacao = dataCriacao;
-        this.tabela = tabela;
-    }
-
+    // Getters e Setters para todos os campos
     public Long getId() {
         return id;
     }
@@ -83,6 +113,110 @@ public class Item {
         this.tabela = tabela;
     }
 
+    public String getTransponder() {
+        return transponder;
+    }
+
+    public void setTransponder(String transponder) {
+        this.transponder = transponder;
+    }
+
+    public String getTipoServico() {
+        return tipoServico;
+    }
+
+    public void setTipoServico(String tipoServico) {
+        this.tipoServico = tipoServico;
+    }
+
+    public String getAnoVeiculo() {
+        return anoVeiculo;
+    }
+
+    public void setAnoVeiculo(String anoVeiculo) {
+        this.anoVeiculo = anoVeiculo;
+    }
+
+    public Double getValorCobrado() {
+        return valorCobrado;
+    }
+
+    public void setValorCobrado(Double valorCobrado) {
+        this.valorCobrado = valorCobrado;
+    }
+
+    public String getMarcaVeiculo() {
+        return marcaVeiculo;
+    }
+
+    public void setMarcaVeiculo(String marcaVeiculo) {
+        this.marcaVeiculo = marcaVeiculo;
+    }
+
+    public String getModeloVeiculo() {
+        return modeloVeiculo;
+    }
+
+    public void setModeloVeiculo(String modeloVeiculo) {
+        this.modeloVeiculo = modeloVeiculo;
+    }
+
+    public String getTipoChave() {
+        return tipoChave;
+    }
+
+    public void setTipoChave(String tipoChave) {
+        this.tipoChave = tipoChave;
+    }
+
+    public String getMaquina() {
+        return maquina;
+    }
+
+    public void setMaquina(String maquina) {
+        this.maquina = maquina;
+    }
+
+    public String getFornecedor() {
+        return fornecedor;
+    }
+
+    public void setFornecedor(String fornecedor) {
+        this.fornecedor = fornecedor;
+    }
+
+    public LocalDate getDataConstrucao() {
+        return dataConstrucao;
+    }
+
+    public void setDataConstrucao(LocalDate dataConstrucao) {
+        this.dataConstrucao = dataConstrucao;
+    }
+
+    public String getCorteMecanico() {
+        return corteMecanico;
+    }
+
+    public void setCorteMecanico(String corteMecanico) {
+        this.corteMecanico = corteMecanico;
+    }
+
+    public String getSistemaImobilizador() {
+        return sistemaImobilizador;
+    }
+
+    public void setSistemaImobilizador(String sistemaImobilizador) {
+        this.sistemaImobilizador = sistemaImobilizador;
+    }
+
+    public String getObservacoes() {
+        return observacoes;
+    }
+
+    public void setObservacoes(String observacoes) {
+        this.observacoes = observacoes;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -102,7 +236,7 @@ public class Item {
                 "id=" + id +
                 ", nome='" + nome + '\'' +
                 ", dataCriacao=" + dataCriacao +
-                ", tabelaId=" + (tabela != null ? tabela.getId() : "null") +
+                ", tabela=" + (tabela != null ? tabela.getId() : "null") +
                 '}';
     }
 }

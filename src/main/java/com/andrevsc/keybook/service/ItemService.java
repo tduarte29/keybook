@@ -31,22 +31,6 @@ public class ItemService {
 
         itemExistente.setNome(dto.nome());
 
-        // itemExistente.getPropriedades().clear();
-        // dto.propriedades().forEach(propDTO -> {
-        //     Propriedade novaPropriedade = new Propriedade();
-        //     novaPropriedade.setNome(propDTO.nome());
-        //     novaPropriedade.setValor(propDTO.valor());
-        //     novaPropriedade.setItem(itemExistente);
-        //     itemExistente.getPropriedades().add(novaPropriedade);
-        // });
-
-        // itemExistente.getComentarios().clear();
-        // dto.comentarios().forEach(comentarioDTO -> {
-        //     Comentario novoComentario = new Comentario();
-        //     novoComentario.setTexto(comentarioDTO.texto());
-        //     novoComentario.setItem(itemExistente);
-        //     itemExistente.getComentarios().add(novoComentario);
-        // });
 
         Item itemAtualizado = itemRepository.save(itemExistente);
 

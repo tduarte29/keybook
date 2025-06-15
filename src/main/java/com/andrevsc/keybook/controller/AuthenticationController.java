@@ -41,19 +41,6 @@ public class AuthenticationController {
         return ResponseEntity.ok(new TokenDTO(token));
     }
 
-//     @PostMapping("/login")
-//     public ResponseEntity<Map<String, String>> login(@RequestBody LoginDTO loginDTO) {
-//     var usernamePassword = new UsernamePasswordAuthenticationToken(loginDTO.email(), loginDTO.password());
-//     var auth = this.authenticationManager.authenticate(usernamePassword);
-//     User user = (User) auth.getPrincipal();
-//     String token = tokenService.generateToken(user);
-    
-//     Map<String, String> response = new HashMap<>();
-//     response.put("token", token);
-//     response.put("userId", user.getId().toString()); // Adiciona o userId
-    
-//     return ResponseEntity.ok(response);
-// }
 
     @PostMapping("/register")
     public ResponseEntity<UserResponseDTO> register(@RequestBody UserCreateDTO userCreateDTO, UriComponentsBuilder uriBuilder) {
