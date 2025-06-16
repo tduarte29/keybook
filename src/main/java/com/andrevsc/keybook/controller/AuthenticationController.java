@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import com.andrevsc.keybook.dto.auth.LoginDTO;
+import com.andrevsc.keybook.dto.auth.LoginResponseDTO;
 import com.andrevsc.keybook.dto.auth.TokenDTO;
 import com.andrevsc.keybook.dto.user.UserCreateDTO;
 import com.andrevsc.keybook.dto.user.UserResponseDTO;
@@ -34,11 +35,12 @@ public class AuthenticationController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<TokenDTO> login(@RequestBody LoginDTO loginDTO) {
+    public ResponseEntity<LoginResponseDTO> login(@RequestBody LoginDTO loginDTO) {
         var authToken = new UsernamePasswordAuthenticationToken(loginDTO.email(), loginDTO.password());
         var authentication = authenticationManager.authenticate(authToken);
-        var token = tokenService.generateToken((User) authentication.getPrincipal());
-        return ResponseEntity.ok(new TokenDTO(token));
+        var user = (User) authentication.getPrincipal();
+        var token = tokenService.generateToken(user);
+        return ResponseEntity.ok(new LoginResponseDTO(token, user.getId()));
     }
 
     @PostMapping("/register")
