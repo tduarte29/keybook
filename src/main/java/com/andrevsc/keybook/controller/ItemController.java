@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.util.UriComponentsBuilder;
@@ -30,9 +31,9 @@ public class ItemController {
 
     @PutMapping("/items/{itemId}/details")
     public ResponseEntity<ItemDetailResponseDTO> updateItemWithDetails(
-            @PathVariable Long itemId,
-            @RequestBody ItemUpdateRequestDTO dto) {
-        ItemDetailResponseDTO updatedItem = itemService.updateItemWithDetails(itemId, dto);
+        @PathVariable Long itemId,
+        @RequestBody ItemUpdateRequestDTO dto) {
+            ItemDetailResponseDTO updatedItem = itemService.updateItemWithDetails(itemId, dto);
         return ResponseEntity.ok(updatedItem);
     }
 
@@ -74,10 +75,12 @@ public class ItemController {
         ItemResponseDTO updatedItem = itemService.updateItem(itemId, dto);
         return ResponseEntity.ok(updatedItem);
     }
+    
 
     @DeleteMapping("/items/{itemId}")
-    public ResponseEntity<Void> deleteItem(
-            @PathVariable Long itemId) {
+        public ResponseEntity<Void> deleteItem(
+        @PathVariable Long itemId,
+        @RequestHeader("Authorization") String authHeader) {
         itemService.deleteItem(itemId);
         return ResponseEntity.noContent().build();
     }

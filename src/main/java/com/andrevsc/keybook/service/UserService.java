@@ -1,16 +1,18 @@
 package com.andrevsc.keybook.service;
 
-import com.andrevsc.keybook.dto.user.UserCreateDTO;
-import com.andrevsc.keybook.dto.user.UserResponseDTO;
-import com.andrevsc.keybook.model.User;
-import com.andrevsc.keybook.repository.UserRepository;
-import jakarta.persistence.EntityNotFoundException;
+import java.util.List;
+import java.util.stream.Collectors;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
-import java.util.stream.Collectors;
+import com.andrevsc.keybook.dto.user.UserCreateDTO;
+import com.andrevsc.keybook.dto.user.UserResponseDTO;
+import com.andrevsc.keybook.model.User;
+import com.andrevsc.keybook.repository.UserRepository;
+
+import jakarta.persistence.EntityNotFoundException;
 
 @Service
 public class UserService {
@@ -55,4 +57,25 @@ public class UserService {
         }
         userRepository.deleteById(userId);
     }
+
+
+    public UserResponseDTO updateUser(Long userId, UserCreateDTO dto) {
+    User user = userRepository.findById(userId)
+        .orElseThrow(() -> new EntityNotFoundException("User not found"));
+    
+    user.setNome(dto.nome());
+    user.setEmail(dto.email());
+    
+    if (dto.password() != null && !dto.password().isEmpty()) {
+        user.setPassword(passwordEncoder.encode(dto.password()));
+    }
+    
+    User updatedUser = userRepository.save(user);
+    return new UserResponseDTO(
+        updatedUser.getId(),
+        updatedUser.getNome(),
+        updatedUser.getEmail()
+    );
+}
+
 }
