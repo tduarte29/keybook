@@ -1,6 +1,8 @@
 package com.andrevsc.keybook.service;
 
+import java.util.Collections;
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -132,4 +134,71 @@ public class ItemService {
         item.setSistemaImobilizador(dto.sistemaImobilizador());
         item.setObservacoes(dto.observacoes());
     }
+
+    public List<String> getFieldSuggestions(String fieldName, String query) {
+        if (query == null || query.trim().isEmpty()) {
+            return Collections.emptyList();
+        }
+        
+        String searchQuery = query.toLowerCase();
+        System.out.println("🔍 Buscando sugestões para '" + fieldName + "' com termo: '" + searchQuery + "'");
+        
+        List<String> results = switch (fieldName) {
+            case "marcaVeiculo" -> itemRepository.findDistinctMarcaVeiculo(searchQuery);
+            case "modeloVeiculo" -> itemRepository.findDistinctModeloVeiculo(searchQuery);
+            case "tipoChave" -> itemRepository.findDistinctTipoChave(searchQuery);
+            case "fornecedor" -> itemRepository.findDistinctFornecedor(searchQuery);
+            case "tipoServico" -> itemRepository.findDistinctTipoServico(searchQuery);
+            case "transponder" -> itemRepository.findDistinctTransponder(searchQuery);
+            default -> throw new IllegalArgumentException("Campo inválido para sugestões: " + fieldName);
+        };
+        
+        // Filtro adicional para garantir qualidade dos resultados
+        results = results.stream()
+            .filter(Objects::nonNull)
+            .filter(s -> !s.isEmpty())
+            .collect(Collectors.toList());
+        
+        System.out.println("✅ " + results.size() + " sugestões encontradas para '" + fieldName + "': " + results);
+        return results;
+    }
+
+    // public List<String> getFieldSuggestions(String fieldName, String query) {
+    //     if (query == null || query.trim().isEmpty()) {
+    //         return Collections.emptyList();
+    //     }
+    //     String searchQuery = query.toLowerCase();
+    //     System.out.println("Buscando sugestões para " + fieldName + ": " + searchQuery);
+        
+    //     List<String> results = switch (fieldName) {
+    //         case "transponder" -> itemRepository.findDistinctTransponder(searchQuery);
+    //         // ... outros cases
+    //         default -> throw new IllegalArgumentException("Campo inválido para sugestões: " + fieldName);
+    //     };
+        
+    //     System.out.println("Resultados encontrados: " + results);
+    //     return results;
+    // }
+
+
+//     public List<String> getFieldSuggestions(String fieldName, String query) {
+//     String searchQuery = "%" + query.toLowerCase() + "%";
+    
+//     switch (fieldName) {
+//         case "marcaVeiculo":
+//             return itemRepository.findDistinctMarcaVeiculo(searchQuery);
+//         case "modeloVeiculo":
+//             return itemRepository.findDistinctModeloVeiculo(searchQuery);
+//         case "tipoChave":
+//             return itemRepository.findDistinctTipoChave(searchQuery);
+//         case "fornecedor":
+//             return itemRepository.findDistinctFornecedor(searchQuery);
+//         case "tipoServico":
+//             return itemRepository.findDistinctTipoServico(searchQuery);
+//         case "transponder":
+//             return itemRepository.findDistinctTransponder(searchQuery);
+//         default:
+//             throw new IllegalArgumentException("Campo inválido para sugestões");
+//     }
+// }
 }

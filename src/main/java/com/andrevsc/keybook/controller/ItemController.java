@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.util.UriComponentsBuilder;
 
@@ -68,6 +69,14 @@ public class ItemController {
         return ResponseEntity.ok(item);
     }
 
+    @GetMapping("/items/suggestions")
+    public ResponseEntity<List<String>> getFieldSuggestions(
+        @RequestParam String field,
+        @RequestParam String query) {
+        List<String> suggestions = itemService.getFieldSuggestions(field, query);
+        return ResponseEntity.ok(suggestions);
+    }
+
     @PutMapping("/items/{itemId}")
     public ResponseEntity<ItemResponseDTO> updateItem(
             @PathVariable Long itemId,
@@ -84,4 +93,11 @@ public class ItemController {
         itemService.deleteItem(itemId);
         return ResponseEntity.noContent().build();
     }
+
+    // @GetMapping("/debug-transponders")
+    // public ResponseEntity<List<String>> debugTransponders() {
+    //     return ResponseEntity.ok(
+    //         ItemRepository.findDistinctTransponder("s")
+    //     );
+    // }
 }
