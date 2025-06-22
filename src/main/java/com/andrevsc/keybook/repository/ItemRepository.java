@@ -17,7 +17,6 @@ public interface ItemRepository extends JpaRepository<Item, Long> {
     @Query("SELECT i FROM Item i WHERE i.id = :itemId")
     Optional<Item> findByIdWithDetails(@Param("itemId") Long itemId);
 
-    // Métodos atualizados para cada campo
     @Query("SELECT DISTINCT i.marcaVeiculo FROM Item i WHERE LOWER(i.marcaVeiculo) LIKE LOWER(CONCAT('%', :query, '%')) AND i.marcaVeiculo IS NOT NULL AND i.marcaVeiculo != ''")
     List<String> findDistinctMarcaVeiculo(String query);
 

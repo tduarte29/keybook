@@ -94,10 +94,4 @@ public class ItemController {
         return ResponseEntity.noContent().build();
     }
 
-    // @GetMapping("/debug-transponders")
-    // public ResponseEntity<List<String>> debugTransponders() {
-    //     return ResponseEntity.ok(
-    //         ItemRepository.findDistinctTransponder("s")
-    //     );
-    // }
 }

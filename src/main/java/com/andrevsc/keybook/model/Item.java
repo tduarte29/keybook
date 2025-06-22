@@ -75,12 +75,10 @@ public class Item {
     @Column(name = "Observacoes", columnDefinition = "TEXT")
     private String observacoes;
 
-    // Construtores, getters, setters, equals, hashCode e toString
 
     public Item() {
     }
 
-    // Getters e Setters para todos os campos
     public Long getId() {
         return id;
     }

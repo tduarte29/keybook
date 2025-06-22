@@ -11,7 +11,6 @@ import org.springframework.web.util.UriComponentsBuilder;
 
 import com.andrevsc.keybook.dto.auth.LoginDTO;
 import com.andrevsc.keybook.dto.auth.LoginResponseDTO;
-import com.andrevsc.keybook.dto.auth.TokenDTO;
 import com.andrevsc.keybook.dto.user.UserCreateDTO;
 import com.andrevsc.keybook.dto.user.UserResponseDTO;
 import com.andrevsc.keybook.model.User;
@@ -53,8 +52,6 @@ public class AuthenticationController {
 
     @PostMapping("/logout")
     public ResponseEntity<Void> logout() {
-    // Na prática, o token ainda será válido até expirar
-    // Mas o frontend pode deletar o token do armazenamento local
     return ResponseEntity.noContent().build();
 }
 }

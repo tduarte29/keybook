@@ -153,7 +153,6 @@ public class ItemService {
             default -> throw new IllegalArgumentException("Campo inválido para sugestões: " + fieldName);
         };
         
-        // Filtro adicional para garantir qualidade dos resultados
         results = results.stream()
             .filter(Objects::nonNull)
             .filter(s -> !s.isEmpty())
@@ -163,42 +162,4 @@ public class ItemService {
         return results;
     }
 
-    // public List<String> getFieldSuggestions(String fieldName, String query) {
-    //     if (query == null || query.trim().isEmpty()) {
-    //         return Collections.emptyList();
-    //     }
-    //     String searchQuery = query.toLowerCase();
-    //     System.out.println("Buscando sugestões para " + fieldName + ": " + searchQuery);
-        
-    //     List<String> results = switch (fieldName) {
-    //         case "transponder" -> itemRepository.findDistinctTransponder(searchQuery);
-    //         // ... outros cases
-    //         default -> throw new IllegalArgumentException("Campo inválido para sugestões: " + fieldName);
-    //     };
-        
-    //     System.out.println("Resultados encontrados: " + results);
-    //     return results;
-    // }
-
-
-//     public List<String> getFieldSuggestions(String fieldName, String query) {
-//     String searchQuery = "%" + query.toLowerCase() + "%";
-    
-//     switch (fieldName) {
-//         case "marcaVeiculo":
-//             return itemRepository.findDistinctMarcaVeiculo(searchQuery);
-//         case "modeloVeiculo":
-//             return itemRepository.findDistinctModeloVeiculo(searchQuery);
-//         case "tipoChave":
-//             return itemRepository.findDistinctTipoChave(searchQuery);
-//         case "fornecedor":
-//             return itemRepository.findDistinctFornecedor(searchQuery);
-//         case "tipoServico":
-//             return itemRepository.findDistinctTipoServico(searchQuery);
-//         case "transponder":
-//             return itemRepository.findDistinctTransponder(searchQuery);
-//         default:
-//             throw new IllegalArgumentException("Campo inválido para sugestões");
-//     }
-// }
 }
