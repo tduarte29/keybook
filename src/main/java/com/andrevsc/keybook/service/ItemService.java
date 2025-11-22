@@ -15,6 +15,7 @@ import com.andrevsc.keybook.dto.item.ItemResponseDTO;
 import com.andrevsc.keybook.dto.item.ItemUpdateRequestDTO;
 import com.andrevsc.keybook.model.Item;
 import com.andrevsc.keybook.model.Tabela;
+import com.andrevsc.keybook.model.enums.TipoEvento;
 import com.andrevsc.keybook.repository.ItemRepository;
 import com.andrevsc.keybook.repository.TabelaRepository;
 
@@ -25,6 +26,9 @@ public class ItemService {
 
     @Autowired
     private ItemRepository itemRepository;
+
+    @Autowired
+    private HistoricoService historicoService;
 
     @Autowired
     private TabelaRepository tabelaRepository;
@@ -59,6 +63,9 @@ public class ItemService {
         tabela.setNumeroItems(tabela.getNumeroItems() + 1);
 
         Item savedItem = itemRepository.save(novoItem);
+        
+        historicoService.registrar(savedItem, TipoEvento.CRIACAO, "Chave criada no sistema.");
+        
         return new ItemResponseDTO(savedItem);
     }
 
@@ -86,6 +93,9 @@ public class ItemService {
         updateItemFields(itemExistente, dto);
 
         Item updatedItem = itemRepository.save(itemExistente);
+        
+        historicoService.registrar(updatedItem, TipoEvento.EDICAO, "Informações da chave atualizadas.");
+        
         return new ItemResponseDTO(updatedItem);
     }
 
@@ -94,9 +104,13 @@ public class ItemService {
         Item item = itemRepository.findById(itemId)
                 .orElseThrow(() -> new EntityNotFoundException("Item não encontrado com o id: " + itemId));
 
+        String nomeBackup = item.getNome();
+        
         Tabela tabela = item.getTabela();
 
         itemRepository.delete(item);
+
+        historicoService.registrarDelecao(nomeBackup, "Chave removida permanentemente.");
 
         tabela.setNumeroItems(tabela.getNumeroItems() - 1);
         tabelaRepository.save(tabela);
