@@ -11,7 +11,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.andrevsc.keybook.dto.historic.HistoricoResponseDTO;
+import com.andrevsc.keybook.dto.historico.HistoricoResponseDTO;
+import com.andrevsc.keybook.model.enums.TipoEvento;
 import com.andrevsc.keybook.service.HistoricoService;
 
 @RestController
@@ -27,7 +28,8 @@ public class HistoricoController {
             @PathVariable Long itemId, 
             @RequestParam String nomeArquivo) {
         
-        historicoService.registrarExportacao(itemId, nomeArquivo);
+        // Agora passamos o Enum EXPORTACAO_PDF
+        historicoService.registrar(itemId, TipoEvento.EXPORTACAO_PDF, "Arquivo gerado: " + nomeArquivo);
         return ResponseEntity.ok().build();
     }
 
