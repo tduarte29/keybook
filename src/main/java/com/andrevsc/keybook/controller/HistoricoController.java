@@ -35,8 +35,11 @@ public class HistoricoController {
 
     // Endpoint para o Flutter PEGAR a lista de históricos
     @GetMapping
-    public ResponseEntity<List<HistoricoResponseDTO>> getHistorico() {
-        List<HistoricoResponseDTO> historico = historicoService.getHistoricoRecente();
+    public ResponseEntity<List<HistoricoResponseDTO>> getHistorico(
+            @RequestParam(defaultValue = "0") int page, // Padrão página 0
+            @RequestParam(defaultValue = "20") int size // Padrão 20 itens
+    ) {
+        List<HistoricoResponseDTO> historico = historicoService.getHistoricoRecente(page, size);
         return ResponseEntity.ok(historico);
     }
 }

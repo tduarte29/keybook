@@ -20,7 +20,7 @@ import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 
 @Entity
-@Table(name = "USUARIOSAPP")
+@Table(name = "USUARIO")
 public class User implements UserDetails {
 
     @Id

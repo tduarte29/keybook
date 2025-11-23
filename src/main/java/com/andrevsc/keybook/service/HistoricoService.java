@@ -54,8 +54,9 @@ public class HistoricoService {
     }
 
     @Transactional(readOnly = true)
-    public List<HistoricoResponseDTO> getHistoricoRecente() {
-        return repo.findRecentActivity(PageRequest.of(0, 50)) // Aumentei pra 50
+    public List<HistoricoResponseDTO> getHistoricoRecente(int page, int size) {
+        // Passa a página e o tamanho dinamicamente para o repositório
+        return repo.findRecentActivity(PageRequest.of(page, size)) 
                 .stream()
                 .map(HistoricoResponseDTO::new)
                 .collect(Collectors.toList());
