@@ -60,4 +60,9 @@ public class HistoricoService {
                 .map(HistoricoResponseDTO::new)
                 .collect(Collectors.toList());
     }
+
+    @Transactional
+    public void desvincularHistoricoDoItem(Long itemId) {
+        repo.desvincularItem(itemId);
+    }
 }

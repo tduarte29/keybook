@@ -102,18 +102,18 @@ public class ItemService {
     @Transactional
     public void deleteItem(Long itemId) {
         Item item = itemRepository.findById(itemId)
-                .orElseThrow(() -> new EntityNotFoundException("Item não encontrado com o id: " + itemId));
+                .orElseThrow(() -> new EntityNotFoundException("Item não encontrado"));
 
-        String nomeBackup = item.getNome();
-        
-        Tabela tabela = item.getTabela();
+        String nomeBackup = item.getNome(); // Salva o nome para o histórico
 
+        // 1. PRIMEIRO: Remove o vínculo do histórico (Isso resolve o erro SQL)
+        historicoService.desvincularHistoricoDoItem(itemId);
+
+        // 2. SEGUNDO: Deleta o item (Agora o banco vai deixar)
         itemRepository.delete(item);
 
+        // 3. TERCEIRO: Registra que foi deletado
         historicoService.registrarDelecao(nomeBackup, "Chave removida permanentemente.");
-
-        tabela.setNumeroItems(tabela.getNumeroItems() - 1);
-        tabelaRepository.save(tabela);
     }
 
     private void updateItemFields(Item item, ItemUpdateRequestDTO dto) {
