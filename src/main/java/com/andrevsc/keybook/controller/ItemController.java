@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -23,6 +24,7 @@ import com.andrevsc.keybook.dto.item.ItemResponseDTO;
 import com.andrevsc.keybook.dto.item.ItemUpdateRequestDTO;
 import com.andrevsc.keybook.service.ItemService;
 
+@CrossOrigin(origins = "*")
 @RestController
 @RequestMapping
 public class ItemController {
